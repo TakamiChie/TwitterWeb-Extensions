@@ -1,0 +1,71 @@
+@media (max-width: 620px) { 
+  /* timeline 向け */
+  div#page-container {
+      width: 100%;
+      margin: 0;
+      padding-left: 0px;
+      padding-right: 0px;
+      min-width: unset;
+    }
+
+  div#timeline {
+      width: 100%;
+      float: none;
+      margin: 0;
+  }
+
+  .dashboard.dashboard-left {
+      display: none;
+  }
+
+  .dashboard.dashboard-right {
+      display: none;
+  }
+
+  .ProfileTweet-actionList {
+    height: auto !important;
+  }
+
+  /* search向け */
+  .Grid > .Grid-cell.u-size1of3 {
+    display: none;
+  }
+
+  .AppContainer {
+    width: 100%;
+    margin: 0;
+    float: none;
+  }
+
+  .AppContent-main.u-cf {
+    min-width: 120px !important;
+  }
+
+  .Grid-cell.u-size2of3.u-lg-size3of4 {
+    box-sizing: content-box;
+    display: block;
+    width: 100% !important;
+  }
+
+  /* Other */
+  .AppContainer {
+    margin: 0 !important;
+  }
+
+  .ProfileCanopy-avatar {
+    top: 10px;
+  }
+
+  .ProfilePage {
+    min-width: unset !important;
+  }
+
+  .ProfileNav {
+    height: auto !important;
+  }
+
+  .ProfileCanopy-navBar.u-boxShadow {
+    height: auto;
+  }
+
+}

@@ -28,6 +28,10 @@
 
   /* reply向け */
 
+  #global-tweet-dialog .modal, #retweet-tweet-dialog .modal {
+    width: 100% !important;
+  }
+
   .permalink-container.permalink-container--withArrows {
     width: 100% !important;
     float: none !important;

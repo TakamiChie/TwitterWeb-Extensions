@@ -46,8 +46,8 @@
 
   div#permalink-overlay-dialog {
     margin: 0;
-    width: 90%;
-    left: 5%;
+    width: 100%;
+    left: 0;
   }
 
 /* search向け */

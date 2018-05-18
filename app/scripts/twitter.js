@@ -16,6 +16,10 @@ const SCENES = {
     name: "search",
     time: 30000,
   },
+  HASHTAG: {
+    name: "hashtag",
+    time: 20000,
+  },
   UNDEF: {
     name: "undefined",
     time: 60000,
@@ -47,6 +51,9 @@ function sceneCheck(url){
       break;
     case "search":
       return SCENES.SEARCH;
+      break;
+    case "hashtag":
+      return SCENES.HASHTAG;
       break;
     default:
       return SCENES.UNDEF;

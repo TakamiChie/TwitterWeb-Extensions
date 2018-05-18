@@ -26,7 +26,13 @@
     height: auto !important;
   }
 
-  /* search向け */
+  /* reply向け */
+
+  .permalink-container.permalink-container--withArrows {
+    width: 100% !important;
+    float: none !important;
+  }
+
   /* 画像付きツイート向け */
 
   .Gallery {
@@ -44,6 +50,7 @@
     left: 5%;
   }
 
+/* search向け */
   .Grid > .Grid-cell.u-size1of3 {
     display: none;
   }

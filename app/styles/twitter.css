@@ -75,6 +75,12 @@
     width: 100% !important;
   }
 
+  /* 投稿画面向け */
+  
+  div#Tweetstorm-dialog-dialog {
+    width: 100% !important;
+  }
+  
   /* Other */
   .AppContainer {
     margin: 0 !important;

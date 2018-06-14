@@ -1,4 +1,5 @@
-const STARTWAIT = 5000;
+const POLLING = 1000;
+const MILLISECOND = 1000;
 const SCENES = {
   TIMELINE: {
     name: "timeline",
@@ -33,7 +34,6 @@ const SCENES = {
  */
 function sceneCheck(url){
   let c = url.split(/[\/?]/);
-  console.log(c);
   switch (c[3]) {
     case undefined:
     case "":
@@ -61,20 +61,64 @@ function sceneCheck(url){
   }
 }
 
-function refresh(){
-  let scene = sceneCheck(location.href);
-  console.log(`This Scene is ${scene.name}`);
-  console.log(`Wait Time of ${scene.time}`);
-  if(document.readyState != "interactive"){
-    if(document.body.scrollTop + window.scrollY == 0){
-      if(document.querySelectorAll(".js-new-tweets-bar").length > 0){
-        document.querySelector(".js-new-tweets-bar").click();
-      }
-    }
-  }
-  window.setTimeout(refresh, scene.time);
+/**
+ * 現在の日付を示すミリ秒単位の値を取得する
+ */
+function getMS(){ return new Date().getTime(); }
+/**
+ * シーンごとのリロード残り時間を取得する
+ * @param {SCENES} scene シーンを示す値
+ */
+function getRestReload(scene){
+  let at = getMS() - lastReload;
+  return scene.time - at;
+}
+/**
+ * ミリ秒を秒に変換する
+ * @param {number} ms ミリ秒
+ */
+function getS(ms){ return Math.trunc(Math.max(0, ms) / MILLISECOND); }
+
+let lastReload = getMS();
+
+/**
+ * ページのリロード用タイマーをセットする
+ * @param {SCENES} scene シーンを示す値
+ */
+function setReloadTimer(scene){
+  let span = document.createElement("span");
+  span.id = "reloadTimer";
+  span.textContent = getS(getRestReload(scene));
+  document.querySelector(".js-new-tweets-bar").parentNode.appendChild(span);
 }
 
-window.setTimeout(refresh, STARTWAIT);
+/**
+ * 毎秒のページチェック処理
+ */
+function pageCheck(){
+  let scene = sceneCheck(location.href);
+  if(document.readyState != "interactive"){
+    if(document.querySelectorAll(".js-new-tweets-bar").length > 0 && document.getElementById("reloadTimer") == undefined){
+      setReloadTimer(scene);
+    }
+  }
+  // リロード待ち
+  let rest = getRestReload(scene);
+  let rt = document.getElementById("reloadTimer");
+  if(rt){
+    if(rest <= 0 && document.body.scrollTop + window.scrollY == 0){
+      // リロードOK
+      document.querySelector(".js-new-tweets-bar").click();
+      rt.parentNode.removeChild(rt);
+      lastReload = getMS();
+    }else{
+      rt.textContent = getS(rest);
+    }
+  }
+  window.setTimeout(pageCheck, POLLING);
+}
+
+pageCheck();
+
 
 

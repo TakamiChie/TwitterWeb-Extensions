@@ -93,6 +93,16 @@ function setReloadTimer(scene){
 }
 
 /**
+ * AdaptiveFiltersBarの表示をトグルする
+ */
+function toggleAFB(){
+  let afb = document.querySelector(".AdaptiveFiltersBar");
+  console.log(afb.style.display);
+  afb.style.display = afb.style.display == "none" ? "block": "none";
+  console.log(afb.style.display);
+}
+
+/**
  * 毎秒のページチェック処理
  */
 function pageCheck(){
@@ -115,10 +125,16 @@ function pageCheck(){
       rt.textContent = getS(rest);
     }
   }
+  // AdaptiveFiltersBarを消去可能にする
+  if(document.getElementsByClassName("SearchNavigation-canopy").length > 0){
+    let snc = document.querySelector(".SearchNavigation-canopy")
+    if(!snc.dataset.toggle){
+      snc.dataset.toggle = true;
+      snc.addEventListener("click", toggleAFB);
+    }
+  }
+  //
   window.setTimeout(pageCheck, POLLING);
 }
 
 pageCheck();
-
-
-

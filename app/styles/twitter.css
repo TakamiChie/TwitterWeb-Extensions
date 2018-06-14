@@ -104,6 +104,12 @@
 
 }
 
+/* AdaptiveFilterBarトグル処理 */
+
+.SearchNavigation-canopy.u-bgUserColor {
+  cursor: pointer;
+}
+
 /* オリジナル要素 */
 
 #reloadTimer{

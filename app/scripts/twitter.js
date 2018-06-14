@@ -111,6 +111,10 @@ function pageCheck(){
     if(document.querySelectorAll(".js-new-tweets-bar").length > 0){
       if(document.getElementById("reloadTimer") == undefined){
         setReloadTimer(scene);
+        // なぜかちょっと下にスクロールする問題対応
+        if(window.scrollY < 50) {
+          window.scroll(0, 0); 
+        }
       }
     }else{
       // ツイートバーが消えてるので、RTを消去

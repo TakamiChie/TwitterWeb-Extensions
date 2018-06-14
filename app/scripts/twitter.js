@@ -97,9 +97,7 @@ function setReloadTimer(scene){
  */
 function toggleAFB(){
   let afb = document.querySelector(".AdaptiveFiltersBar");
-  console.log(afb.style.display);
   afb.style.display = afb.style.display == "none" ? "block": "none";
-  console.log(afb.style.display);
 }
 
 /**

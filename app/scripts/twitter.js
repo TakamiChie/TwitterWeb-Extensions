@@ -108,8 +108,16 @@ function toggleAFB(){
 function pageCheck(){
   let scene = sceneCheck(location.href);
   if(document.readyState != "interactive"){
-    if(document.querySelectorAll(".js-new-tweets-bar").length > 0 && document.getElementById("reloadTimer") == undefined){
-      setReloadTimer(scene);
+    if(document.querySelectorAll(".js-new-tweets-bar").length > 0){
+      if(document.getElementById("reloadTimer") == undefined){
+        setReloadTimer(scene);
+      }
+    }else{
+      // ツイートバーが消えてるので、RTを消去
+      let rt = document.getElementById("reloadTimer");
+      if(rt){
+        rt.parentNode.removeChild(rt);
+      }
     }
   }
   // リロード待ち

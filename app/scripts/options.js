@@ -25,6 +25,17 @@ function init(){
   let tl = document.getElementById("timeline");
   let mention = document.getElementById("mention");
   let search = document.getElementById("search");
+  document.getElementById("resetValues").addEventListener("click", (e) => {
+    let tl = document.getElementById("timeline");
+    let mention = document.getElementById("mention");
+    let search = document.getElementById("search");
+    let a =  [[tl, 30000], [mention, 1000], [search, 20000]];
+    a.forEach((value) => {
+      value[0].value = value[1];
+      updateLabel(value[0]);
+      saveOption(value[0]);
+    });
+  });
   let a = [tl, mention, search];
   a.forEach((value) => {
     value.addEventListener("input", rangeInputed);

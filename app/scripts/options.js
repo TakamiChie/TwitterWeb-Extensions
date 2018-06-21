@@ -15,10 +15,9 @@ function updateLabel(obj){
 }
 
 function saveOption(obj){
-  let setName = "reload_" + obj.id;
-  chrome.storage.sync.set({
-    setName: obj.value
-  }, () => {
+  let data = {};
+  data["reload_" + obj.id] = obj.value;
+  chrome.storage.sync.set(data, () => {
   });
 }
 

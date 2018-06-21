@@ -25,8 +25,8 @@ const SCENES = {
     name: "undefined",
     time: 60000,
   }
-
 }
+var sceneVal = SCENES;
 
 /**
  * シーン検出を行う
@@ -37,26 +37,26 @@ function sceneCheck(url){
   switch (c[3]) {
     case undefined:
     case "":
-      return SCENES.TIMELINE
+      return sceneVal.TIMELINE
       break;
     case "i":
       if(c[4] == "notifications"){
-        return SCENES.NOTIFICATION;
+        return sceneVal.NOTIFICATION;
       }else{
-        return SCENES.UNDEF;
+        return sceneVal.UNDEF;
       }
       break;
     case "mentions":
-      return SCENES.MENTION;
+      return sceneVal.MENTION;
       break;
     case "search":
-      return SCENES.SEARCH;
+      return sceneVal.SEARCH;
       break;
     case "hashtag":
-      return SCENES.HASHTAG;
+      return sceneVal.HASHTAG;
       break;
     default:
-      return SCENES.UNDEF;
+      return sceneVal.UNDEF;
       break;
   }
 }
@@ -147,4 +147,18 @@ function pageCheck(){
   window.setTimeout(pageCheck, POLLING);
 }
 
+// 設定読み込み
+chrome.storage.sync.get({
+  "reload_timeline": SCENES.TIMELINE.time,
+  "reload_mention": SCENES.MENTION.time,
+  "reload_search": SCENES.SEARCH.time
+}, (items) => {
+  sceneVal.TIMELINE.time = 
+    parseInt(items.reload_timeline);
+  sceneVal.MENTION.time = sceneVal.NOTIFICATION.time = 
+    parseInt(items.reload_mention);
+  sceneVal.SEARCH.time = sceneVal.HASHTAG.time = 
+    parseInt(items.reload_search);
+});
+//
 pageCheck();

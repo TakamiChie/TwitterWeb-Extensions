@@ -16,6 +16,7 @@
         "css": [ "styles/twitter.css" ]
     }
   ],
+  "permissions": ["storage"],
   "options_page": "pages/options.html",
   "options_ui": {
     "page": "pages/options.html",

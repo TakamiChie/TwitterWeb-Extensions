@@ -1,0 +1,12 @@
+section{
+  display: table;
+}
+label{
+  display: table-row;
+}
+span,input[type="range"]{
+  display: table-cell;
+}
+span[id$="number"]:after{
+  content: "秒";
+}

@@ -8,7 +8,7 @@
     "description": "The short_name (maximum of 12 characters recommended) is a short version of the app's name."
   },
   "appDescription": {
-    "message": "This extension adds automatic reloading and other functions to Twitter Web version.",
+    "message": "Twitter Web版に、自動リロードをはじめとした機能を追加します。",
     "description": "The description of the application"
   }
 }

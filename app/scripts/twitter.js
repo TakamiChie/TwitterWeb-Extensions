@@ -126,7 +126,7 @@ function pageCheck(){
   let rest = getRestReload(scene);
   let rt = document.getElementById("reloadTimer");
   if(rt){
-    if(rest <= 0 && document.body.scrollTop + window.scrollY == 0){
+    if(rest <= 0 && document.body.scrollTop + window.scrollY == 0 && document.hidden == false){
       // リロードOK
       document.querySelector(".js-new-tweets-bar").click();
       rt.parentNode.removeChild(rt);

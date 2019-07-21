@@ -128,8 +128,11 @@ function time(){
       }, 500);
   }
 }
+
+setTimeout(() => {
 setScene();
 setTimeout(time, scene.time);
+}, 1000);
 
 window.addEventListener('popstate', () => {
   setScene();

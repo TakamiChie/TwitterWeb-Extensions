@@ -1,4 +1,6 @@
 const POLLING = 1000;
+const SCROLL_CHECK_FIRST = 1000;
+const SCROLL_CHECK_SECOND = 500;
 const MILLISECOND = 1000;
 const SCENES = {
   TIMELINE: {
@@ -88,50 +90,51 @@ function time(){
     // scrollYが0以外の時は次のタイミングを待つ
     setTimeout(time, POLLING);
   }else{
-  console.log("reload");
-  if(scrollY > 0){ return }
-  let scrolling = () => {
-    setTimeout(() => {
-      if(scrollY > 0){
-        scrollTo(scrollX, 0);
-        console.log("scrolling");
-        setTimeout(scrolling, 500);
-      }else{
-        setTimeout(time, scene.time);
-      }
-    }, 500);
-  }
-  switch(scene.name){
-    case SCENES.TIMELINE.name:
-      document.querySelector("nav > a[href='/home']").click();
-      setTimeout(scrolling, 500);
-      break;
-    case SCENES.MENTION.name:
-    case SCENES.NOTIFICATION.name:
-      document.querySelector("nav > a[href='/notifications']").click();
-      setTimeout(scrolling, 500);
-      break;
-    case SCENES.SEARCH.name:
-      scrollTo(scrollX, 500);
+    console.log("reload");
+    // リロード処理
+    let scrolling = () => {
       setTimeout(() => {
-        let href = "";
-        if(location.search.match("live")){
-          href = "click&f=live"
+        if(scrollY > 0){
+          scrollTo(scrollX, 0);
+          console.log("scrolling");
+          setTimeout(scrolling, SCROLL_CHECK_SECOND);
         }else{
-          href = "click"
+          setTimeout(time, scene.time);
         }
-        let elem = document.querySelector(`main nav a[href$='${href}']`);
-        if(elem != null) {
-          elem.click();
-          setTimeout(scrolling, 1000);
-        }
-      }, 500);
+      }, SCROLL_CHECK_SECOND);
+    }
+    switch(scene.name){
+      case SCENES.TIMELINE.name:
+        document.querySelector("nav > a[href='/home']").click();
+        setTimeout(scrolling, SCROLL_CHECK_FIRST);
+        break;
+      case SCENES.MENTION.name:
+      case SCENES.NOTIFICATION.name:
+        document.querySelector("nav > a[href='/notifications']").click();
+        setTimeout(scrolling, SCROLL_CHECK_FIRST);
+        break;
+      case SCENES.SEARCH.name:
+        scrollTo(scrollX, SCROLL_CHECK_SECOND);
+        setTimeout(() => {
+          let href = "";
+          if(location.search.match("live")){
+            href = "click&f=live"
+          }else{
+            href = "click"
+          }
+          let elem = document.querySelector(`main nav a[href$='${href}']`);
+          if(elem != null) {
+            elem.click();
+            setTimeout(scrolling, SCROLL_CHECK_FIRST);
+          }
+        }, SCROLL_CHECK_FIRST);
+    }
   }
 }
 
 setTimeout(() => {
-setScene();
-setTimeout(time, scene.time);
+  setScene();
+  setTimeout(time, scene.time);
 }, 1000);
 
 window.addEventListener('popstate', () => {

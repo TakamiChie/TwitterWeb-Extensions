@@ -113,6 +113,7 @@ function time(){
         document.querySelector("nav > a[href='/notifications']").click();
         setTimeout(scrolling, SCROLL_CHECK_FIRST);
         break;
+      case SCENES.HASHTAG.name:
       case SCENES.SEARCH.name:
         scrollTo(scrollX, SCROLL_CHECK_SECOND);
         setTimeout(() => {

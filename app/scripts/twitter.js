@@ -84,6 +84,10 @@ function setScene(){
   console.log(`This is ${scene.name} page reload time ${scene.time}`);
 }
 function time(){
+  if(scrollY > 0){
+    // scrollYが0以外の時は次のタイミングを待つ
+    setTimeout(time, POLLING);
+  }else{
   console.log("reload");
   if(scrollY > 0){ return }
   let scrolling = () => {

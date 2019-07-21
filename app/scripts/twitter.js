@@ -37,6 +37,7 @@ function sceneCheck(url){
   switch (c[3]) {
     case undefined:
     case "":
+    case "home":
       return sceneVal.TIMELINE
       break;
     case "i":
@@ -61,92 +62,6 @@ function sceneCheck(url){
   }
 }
 
-/**
- * 現在の日付を示すミリ秒単位の値を取得する
- */
-function getMS(){ return new Date().getTime(); }
-/**
- * シーンごとのリロード残り時間を取得する
- * @param {SCENES} scene シーンを示す値
- */
-function getRestReload(scene){
-  let at = getMS() - lastReload;
-  return scene.time - at;
-}
-/**
- * ミリ秒を秒に変換する
- * @param {number} ms ミリ秒
- */
-function getS(ms){ return Math.trunc(Math.max(0, ms) / MILLISECOND); }
-
-let lastReload = getMS();
-
-/**
- * ページのリロード用タイマーをセットする
- * @param {SCENES} scene シーンを示す値
- */
-function setReloadTimer(scene){
-  let span = document.createElement("span");
-  span.id = "reloadTimer";
-  span.textContent = getS(getRestReload(scene));
-  document.querySelector(".js-new-tweets-bar").parentNode.appendChild(span);
-}
-
-/**
- * AdaptiveFiltersBarの表示をトグルする
- */
-function toggleAFB(){
-  let afb = document.querySelector(".AdaptiveFiltersBar");
-  afb.style.display = afb.style.display == "none" ? "block": "none";
-}
-
-/**
- * 毎秒のページチェック処理
- */
-function pageCheck(){
-  let scene = sceneCheck(location.href);
-  if(document.readyState != "interactive"){
-    if(document.querySelectorAll(".js-new-tweets-bar").length > 0){
-      if(document.getElementById("reloadTimer") == undefined){
-        setReloadTimer(scene);
-        // なぜかちょっと下にスクロールする問題対応
-        if(window.scrollY < 50) {
-          window.scroll(0, 0); 
-        }
-      }
-    }else{
-      // ツイートバーが消えてるので、RTを消去
-      let rt = document.getElementById("reloadTimer");
-      if(rt){
-        rt.parentNode.removeChild(rt);
-      }
-    }
-  }
-  // リロード待ち
-  let rest = getRestReload(scene);
-  let rt = document.getElementById("reloadTimer");
-  if(rt){
-    if(rest <= 0 && document.body.scrollTop + window.scrollY == 0 && document.hidden == false){
-      // リロードOK
-      document.querySelector(".js-new-tweets-bar").click();
-      rt.parentNode.removeChild(rt);
-      lastReload = getMS();
-    }else{
-      rt.textContent = getS(rest);
-    }
-  }
-  // AdaptiveFiltersBarを消去可能にする
-  if(document.getElementsByClassName("SearchNavigation-canopy").length > 0){
-    let snc = document.querySelector(".SearchNavigation-canopy")
-    if(!snc.dataset.toggle){
-      snc.dataset.toggle = true;
-      snc.addEventListener("click", toggleAFB);
-    }
-  }
-  //
-  window.setTimeout(pageCheck, POLLING);
-}
-
 // 設定読み込み
 chrome.storage.sync.get({
   "reload_timeline": SCENES.TIMELINE.time,
@@ -161,4 +76,57 @@ chrome.storage.sync.get({
     parseInt(items.reload_search);
 });
 //
-pageCheck();
+
+let scene;
+
+function setScene(){
+  scene = sceneCheck(location.href);
+  console.log(`This is ${scene.name} page reload time ${scene.time}`);
+}
+function time(){
+  console.log("reload");
+  if(scrollY > 0){ return }
+  let scrolling = () => {
+    setTimeout(() => {
+      if(scrollY > 0){
+        scrollTo(scrollX, 0);
+        console.log("scrolling");
+        setTimeout(scrolling, 500);
+      }else{
+        setTimeout(time, scene.time);
+      }
+    }, 500);
+  }
+  switch(scene.name){
+    case SCENES.TIMELINE.name:
+      document.querySelector("nav > a[href='/home']").click();
+      setTimeout(scrolling, 500);
+      break;
+    case SCENES.MENTION.name:
+    case SCENES.NOTIFICATION.name:
+      document.querySelector("nav > a[href='/notifications']").click();
+      setTimeout(scrolling, 500);
+      break;
+    case SCENES.SEARCH.name:
+      scrollTo(scrollX, 500);
+      setTimeout(() => {
+        let href = "";
+        if(location.search.match("live")){
+          href = "click&f=live"
+        }else{
+          href = "click"
+        }
+        let elem = document.querySelector(`main nav a[href$='${href}']`);
+        if(elem != null) {
+          elem.click();
+          setTimeout(scrolling, 1000);
+        }
+      }, 500);
+  }
+}
+setScene();
+setTimeout(time, scene.time);
+
+window.addEventListener('popstate', () => {
+  setScene();
+});

@@ -1,7 +1,7 @@
 {
   "name": "twit_web_extension",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.3.0",
   "description": "TwitterWeb Extensions",
   "scripts": {
     "start": "npm run dev:chrome",

@@ -137,6 +137,7 @@ function time(){
             setTimeout(scrolling, SCROLL_CHECK_FIRST);
           }
         }, SCROLL_CHECK_FIRST);
+        break;
     }
   }
 }

@@ -23,6 +23,10 @@ const SCENES = {
     name: "hashtag",
     time: 20000,
   },
+  COMPOSE: {
+    name: "compose",
+    time: 0,
+  },
   UNDEF: {
     name: "undefined",
     time: 60000,
@@ -58,6 +62,9 @@ function sceneCheck(url){
     case "hashtag":
       return sceneVal.HASHTAG;
       break;
+    case "compose":
+      return sceneVal.COMPOSE;
+      break;
     default:
       return sceneVal.UNDEF;
       break;
@@ -86,7 +93,7 @@ function setScene(){
   console.log(`This is ${scene.name} page reload time ${scene.time}`);
 }
 function time(){
-  if(scrollY > 0){
+  if(scrollY > 0 || sceneCheck(location.href).name == SCENES.COMPOSE.name){
     // scrollYが0以外の時は次のタイミングを待つ
     setTimeout(time, POLLING);
   }else{

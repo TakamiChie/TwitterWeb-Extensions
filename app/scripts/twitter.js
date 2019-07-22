@@ -98,6 +98,7 @@ function time(){
     setTimeout(time, POLLING);
   }else{
     console.log("reload");
+    setScene();
     // リロード処理
     let scrolling = () => {
       setTimeout(() => {
@@ -144,7 +145,3 @@ setTimeout(() => {
   setScene();
   setTimeout(time, scene.time);
 }, 1000);
-
-window.addEventListener('popstate', () => {
-  setScene();
-});

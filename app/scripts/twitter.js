@@ -114,12 +114,10 @@ function time(){
     switch(scene.name){
       case SCENES.TIMELINE.name:
         document.querySelector("nav > a[href='/home']").click();
-        setTimeout(scrolling, SCROLL_CHECK_FIRST);
         break;
       case SCENES.MENTION.name:
       case SCENES.NOTIFICATION.name:
         document.querySelector("nav > a[href='/notifications']").click();
-        setTimeout(scrolling, SCROLL_CHECK_FIRST);
         break;
       case SCENES.HASHTAG.name:
       case SCENES.SEARCH.name:
@@ -137,8 +135,9 @@ function time(){
             setTimeout(scrolling, SCROLL_CHECK_FIRST);
           }
         }, SCROLL_CHECK_FIRST);
-        break;
+        return;
     }
+    setTimeout(scrolling, SCROLL_CHECK_FIRST);
   }
 }
 
